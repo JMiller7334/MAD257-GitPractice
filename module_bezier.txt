@@ -1,8 +1,8 @@
 -- Coded by Jacob Miller --
--- [[ DOCUMENTATION: v0.01
+-- [[ DOCUMENTATION: v0.02
 This is a module that generates quadratic Bézier curves in 3D space using
 Lua as the programming language. Curves generated are based on 3 points and 
-t(time) the independant variable.
+t(time) the independent variable.
 
 *This was a short experiment. 
 
