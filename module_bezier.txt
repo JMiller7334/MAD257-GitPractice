@@ -1,0 +1,69 @@
+-- Coded by Jacob Miller --
+-- [[ DOCUMENTATION: v0.01
+This is a module that generates quadratic Bézier curves in 3D space using
+Lua as the programming language. Curves generated are based on 3 points and 
+t(time) the independant variable.
+
+*This was a short experiment. 
+
+This module needs to required by another script that also passes data for the 3 points of the curve
+]]
+
+-- SETUP --
+local spline = Instance.new("Folder", game.Workspace)
+spline.Name = ("Spline")
+
+-- LOCAL FUNCTIONS --
+local function generateVisual(i, cf)
+	local node = Instance.new("Part")
+	node.Anchored = true
+	node.Size = Vector3.new(2, 2, 2)
+	node.Parent = spline
+	node.Name = i
+	node.Position = cf
+end
+
+local function getBaseline(p0, p1, p2, coordinate) -- Determines the lowest point to calculate from.
+	local result = math.min(p0[coordinate], p1[coordinate], p2[coordinate])
+	print("animation[baseline]:"..result)
+	return result
+end
+
+local function lerp(a, b, t) -- Linear Interpolation
+	local result = a + (b - a) * t
+	return result
+end
+
+local function quadraticBezier(t, p0, p1, p2) -- Quadratic Bezier
+	local l1 = lerp(p0, p1, t)
+	local l2 = lerp(p1, p2, t)
+	local quad = lerp(l1, l2, t)
+	print("animations[quadraticBezier].result:"..quad)
+	return quad
+end
+
+-- MODULE FUNCTIONS --
+local module = {}
+
+-- Generates arc/curve based on 3 points --
+function module.generateSpline(point0, point1, point2, nodeCount)
+	spline:ClearAllChildren()
+	local arrayCoordinates = {"X", "Y", "Z"} -- list of coordinate types to be used 
+	local pos0, pos1, pos2 = point0.Position, point1.Position, point2.Position
+	local baseline = getBaseline(pos0, pos1, pos2, arrayCoordinates[2]) -- get baseline/lowest point.
+	
+	for iteration = 0, nodeCount do
+		local resultCf = {} --array to hold the results calculated for each coordinate type; the resulting position for each node gernerated by iteration of for loop.
+		for _, coordinate in pairs(arrayCoordinates) do
+			local calculatedCoordinate = quadraticBezier( -- calculate each coordinate
+				(iteration/10), pos0[coordinate], pos1[coordinate], pos2[coordinate])
+			table.insert(resultCf, calculatedCoordinate) --insert results into the array
+		end
+		
+		local nodeCf = point0.CFrame.Position --create cframe variable to hold the results based on position of first point
+		nodeCf = Vector3.new(resultCf[1], baseline+resultCf[2], resultCf[3]) --adjust node position based on baseline and resulting data
+		generateVisual(iteration, nodeCf) --creates visual node.
+	end
+end
+
+return module
