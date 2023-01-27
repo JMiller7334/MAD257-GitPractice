@@ -1,0 +1,19 @@
+local _bezierModule = require(game:GetService("ReplicatedStorage").Modules:WaitForChild("module_bezier", 5))
+
+local p0 = game.Workspace:WaitForChild("Point0")
+local p1 = game.Workspace:WaitForChild("Point1")
+local P2 = game.Workspace:WaitForChild("Point2")
+
+function runModule(nodeCount, looped)
+	local continuousRun = looped
+	if not continuousRun then
+		bezierModule.generateSpline(p0, p1, p2, nodeCount)
+	else
+		while continuousRun == true do
+			bezierModule.generateSpline(p0, p1, p2, nodeCount)
+			wait(2)
+		end
+	end
+end
+
+runModule(10, true)
