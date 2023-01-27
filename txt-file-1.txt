@@ -1,0 +1,3 @@
+This is a new txt file for the sake of making a new txt file.
+
+I'll start a new branch for this file. Where it goes from there? Who knows?!
