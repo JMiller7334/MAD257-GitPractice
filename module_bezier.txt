@@ -46,6 +46,7 @@ end
 local module = {}
 
 -- Generates arc/curve based on 3 points --
+
 function module.generateSpline(point0, point1, point2, nodeCount)
 	spline:ClearAllChildren()
 	local arrayCoordinates = {"X", "Y", "Z"} -- list of coordinate types to be used 
