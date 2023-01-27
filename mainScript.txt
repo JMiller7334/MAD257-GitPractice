@@ -1,14 +1,28 @@
+--[[ DOCUMENTATION:  This script is currently untested v0.01
+this is the main script that runs works alongside the moduleScript to create bezier curves.
+If looped is set to true on the runModule function then this script will use the moduleScript to create
+and update the bezier curve every 2 seconds.
+]]
+
+//get the bezierModule from it's location'
 local _bezierModule = require(game:GetService("ReplicatedStorage").Modules:WaitForChild("module_bezier", 5))
 
+//locate the points in workspace to be used to generate the bezier curve from.
+//NOTE: WaitForChild with no second parameter will produce an inf yeild. This is intentional here.
 local p0 = game.Workspace:WaitForChild("Point0")
 local p1 = game.Workspace:WaitForChild("Point1")
 local P2 = game.Workspace:WaitForChild("Point2")
 
-function runModule(nodeCount, looped)
+//The function that takes in arguments and calls the bezier module.
+local function runModule(nodeCount, looped)
 	local continuousRun = looped
+	
+	//if not set to loop then run once and quit.
 	if not continuousRun then
 		bezierModule.generateSpline(p0, p1, p2, nodeCount)
 	else
+	
+	// otherwise run the module continuously.
 		while continuousRun == true do
 			bezierModule.generateSpline(p0, p1, p2, nodeCount)
 			wait(2)
@@ -16,4 +30,5 @@ function runModule(nodeCount, looped)
 	end
 end
 
+//fire func on start up
 runModule(10, true)
